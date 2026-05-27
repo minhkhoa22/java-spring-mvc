@@ -28,15 +28,13 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    // homePage
     @RequestMapping("/")
     public String getHomePage(Model model) {
-        List<User> arrUsers = this.userService.getAllUserByEmail("minhkhoa090201@gmail.com");
-        String test = this.userService.handleHello();
-        model.addAttribute("eric", test);
-        model.addAttribute("myLove", "My lover is Ngan");
         return "hello";
     }
 
+    // vieUserPage
     @RequestMapping(value = "/admin/user")
     public String getUserPage(Model model) {
         List<User> users = this.userService.getAllUser();
@@ -44,6 +42,7 @@ public class UserController {
         return "admin/user/table-user";
     }
 
+    // getViewUserDetail
     @RequestMapping(value = "/admin/user/{id}")
     public String getUserDetailPage(Model model, @PathVariable long id) {
         User userDetail = this.userService.getUserById(id);
@@ -51,12 +50,14 @@ public class UserController {
         return "admin/user/user-details";
     }
 
+    // getViewCreateUser
     @RequestMapping("/admin/user/create")
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
         return "admin/user/create";
     }
 
+    // getViewUpdateUser
     @RequestMapping(value = "/admin/user/update/{id}")
     public String getUpdateUserPage(Model model, @PathVariable long id) {
         User currentUser = this.userService.getUserById(id);

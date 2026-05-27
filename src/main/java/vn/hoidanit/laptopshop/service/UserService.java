@@ -16,10 +16,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String handleHello() {
-        return "hello from service";
-    }
-
     public List<User> getAllUser() {
         return this.userRepository.findAll();
     }
