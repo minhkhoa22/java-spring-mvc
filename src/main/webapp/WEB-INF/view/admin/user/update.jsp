@@ -12,25 +12,12 @@ uri="http://www.springframework.org/tags/form" %>
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Create User</title>
+    <title>Manager User</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
       crossorigin="anonymous"
     ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-                <script>
-                    $(document).ready(() => {
-                        const avatarFile = $("#avatarFile");
-                        avatarFile.change(function (e) {
-                            const imgURL = URL.createObjectURL(e.target.files[0]);
-                            $("#avatarPreview").attr("src", imgURL);
-                            $("#avatarPreview").css({ "display": "block" });
-                        });
-                    });
-                </script>
-
   </head>
   <body class="sb-nav-fixed">
     <jsp:include page="../layout/header.jsp" />
@@ -39,38 +26,40 @@ uri="http://www.springframework.org/tags/form" %>
       <div id="layoutSidenav_content">
         <main>
           <div class="container-fluid px-4">
-            <ol class="breadcrumb mb-4 mt-3">
+            <h1 class="mt-4">Update User</h1>
+            <ol class="breadcrumb mb-4">
               <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
               <li class="breadcrumb-item active">User</li>
             </ol>
             <div class="container mt-5">
               <div class="row">
                 <div class="col-md-6 col-12 mx-auto">
-                  <h3>CREATE A USER</h3>
+                  <h3>UPDATE USER</h3>
                   <hr />
                   <form:form
                     method="post"
-                    action="/admin/user/create"
+                    action="/admin/user/update"
                     modelAttribute="newUser"
-                    class="row"
                   >
-                    <div class="mb-3 col-12 col-md-6">
+                    <div class="mb-3" style="display: none">
+                      <label class="form-label disable">ID</label>
+                      <form:input
+                        type="text"
+                        class="form-control"
+                        path="id"
+                        readonly="true"
+                      />
+                    </div>
+                    <div class="mb-3">
                       <label class="form-label">Email</label>
                       <form:input
                         type="email"
                         class="form-control"
                         path="email"
+                        disabled="true"
                       />
                     </div>
-                    <div class="mb-3 col-12 col-md-6">
-                      <label class="form-label">Password</label>
-                      <form:input
-                        type="password"
-                        class="form-control"
-                        path="password"
-                      />
-                    </div>
-                    <div class="mb-3 col-12 col-md-6">
+                    <div class="mb-3">
                       <label class="form-label">Phone number</label>
                       <form:input
                         type="text"
@@ -78,7 +67,7 @@ uri="http://www.springframework.org/tags/form" %>
                         path="phone"
                       />
                     </div>
-                    <div class="mb-3 col-12 col-md-6">
+                    <div class="mb-3">
                       <label class="form-label">Full Name</label>
                       <form:input
                         type="text"
@@ -86,7 +75,7 @@ uri="http://www.springframework.org/tags/form" %>
                         path="fullName"
                       />
                     </div>
-                    <div class="mb-3 col-12">
+                    <div class="mb-3">
                       <label class="form-label">Address</label>
                       <form:input
                         type="text"
@@ -94,30 +83,7 @@ uri="http://www.springframework.org/tags/form" %>
                         path="address"
                       />
                     </div>
-                    <div class="mb-3 col-12 col-md-6">
-                      <label class="form-label">Role</label>
-                      <select class="form-select">
-                        <option value="ADMIN">ADMIN</option>
-                        <option value="USER">USER</option>
-                      </select>
-                    </div>
-                    <div class="mb-3 col-12 col-md-6">
-                      <label for="avatarFile" class="form-label">Avatar</label>
-                      <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg">
-                    </div>
-                    <div class="col-12 text-center">
-                        <img
-                            id="avatarPreview"
-                            alt="avatar preview"
-                            class="img-thumbnail mt-3"
-                            style="
-                                max-width: 220px;
-                                display: none;
-                                object-fit: cover;
-                            "
-                        />
-                    </div>
-                    <div class="col-12 mb-6 mt-3"><button class="btn btn-success">Create</button></div>
+                    <button class="btn btn-primary">Update</button>
                   </form:form>
                 </div>
               </div>
