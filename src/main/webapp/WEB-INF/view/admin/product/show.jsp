@@ -11,7 +11,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Product</title>
+    <title>Manager Product</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
@@ -25,11 +25,51 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       <div id="layoutSidenav_content">
         <main>
           <div class="container-fluid px-4">
-            <ol class="breadcrumb mb-4 mt-3">
-              <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-              <li class="breadcrumb-item active">Order</li>
+            <h1 class="mt-4">Manager Product</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item"> <a href="/admin">Dashboard</a></li>
+              <li class="breadcrumb-item active">Product</li>
             </ol>
-            <div>Product</div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12 mx-auto">
+          <div class="d-flex justify-content-between">
+            <h3></h3>
+            <a href="/admin/product/create" class="btn btn-primary"
+              >Create a product</a
+            >
+          </div>
+          <hr />
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Factory</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="product" items = "${product}">
+                    <tr>
+                        <th>${product.id}</th>
+                        <td>${product.name}</td>
+                        <td>${product.price}</td>
+                        <td>${product.factory}</td>
+                        <td>
+                            <a href="/admin/product/${product.id}"
+                            class="btn btn-success">View</a>
+                            <a class="btn btn-primary" href="/admin/product/update/${product.id}">Update</a>
+                            <a class="btn btn-warning" href="/admin/product/delete/${product.id}" onclick="return confirm('Bạn có chắc muốn xoá sản phẩm này không?')">Delete</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
           </div>
         </main>
         <jsp:include page="../layout/footer.jsp" />

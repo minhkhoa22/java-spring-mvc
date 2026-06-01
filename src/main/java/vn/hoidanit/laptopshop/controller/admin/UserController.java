@@ -1,31 +1,41 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.ui.Model;
 
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.UserRepository;
+import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class UserController {
     private UserService userService;
     private final UserRepository userRepository;
+    private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService, UserRepository userRepository, UploadService uploadService,
+            PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // homePage
@@ -51,10 +61,23 @@ public class UserController {
     }
 
     // getViewCreateUser
-    @RequestMapping("/admin/user/create")
+    @GetMapping("/admin/user/create")
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
         return "admin/user/create";
+    }
+
+    // create user
+    @PostMapping(value = "/admin/user/create")
+    public String handleCreateUserPage(Model model, @ModelAttribute("newUser") User user,
+            @RequestParam("inputFile") MultipartFile file) {
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+        String hashPassword = this.passwordEncoder.encode(user.getPassword());
+        user.setAvatar(avatar);
+        user.setPassword(hashPassword);
+        user.setRole(this.userService.getRoleByName(user.getRole().getName()));
+        this.userService.handleSaveUser(user);
+        return "redirect:/admin/user";
     }
 
     // getViewUpdateUser
@@ -65,19 +88,11 @@ public class UserController {
         return "admin/user/update";
     }
 
-    // create user
-    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-    public String handleCreateUserPage(Model model, @ModelAttribute("newUser") User myLove) {
-        this.userService.handleSaveUser(myLove);
-        return "redirect:/admin/user";
-    }
-
     // update user
     @PostMapping("/admin/user/update")
     public String postUpdateUser(Model model, @ModelAttribute("newUser") User userUpdate) {
         User currentUser = this.userService.getUserById(userUpdate.getId());
         if (currentUser != null) {
-            System.out.println("run here");
             currentUser.setAddress(userUpdate.getAddress());
             currentUser.setPhone(userUpdate.getPhone());
             currentUser.setFullName(userUpdate.getFullName());
