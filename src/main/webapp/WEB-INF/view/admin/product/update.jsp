@@ -12,7 +12,7 @@ uri="http://www.springframework.org/tags/form" %>
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Create Product</title>
+    <title>Update Product</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
@@ -22,8 +22,15 @@ uri="http://www.springframework.org/tags/form" %>
 
     <script>
       $(document).ready(() => {
-        const avatarFile = $("#productFile");
-        avatarFile.change(function (e) {
+        const productFile = $("#productFile");
+        const proImage = "${newProduct.image}";
+        if(proImage){
+            const urlImage= "/images/product/" + proImage;
+          $("#productPreview").attr("src", urlImage);
+          $("#productPreview").css({ display: "block" });
+        }
+
+        productFile.change(function (e) {
           const imgURL = URL.createObjectURL(e.target.files[0]);
           $("#productPreview").attr("src", imgURL);
           $("#productPreview").css({ display: "block" });
@@ -40,20 +47,30 @@ uri="http://www.springframework.org/tags/form" %>
           <div class="container-fluid px-4">
             <ol class="breadcrumb mb-4 mt-3">
               <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-              <li class="breadcrumb-item active">Product</li>
+              <li class="breadcrumb-item"> <a href="/admin/product">Product</a></li>
+              <li class="breadcrumb-item active">Update Product</li>
             </ol>
             <div class="container mt-5">
               <div class="row">
                 <div class="col-md-6 col-12 mx-auto">
-                  <h3>CREATE A PRODUCT</h3>
+                  <h3>UPDATE A PRODUCT</h3>
                   <hr />
                   <form:form
                     method="post"
-                    action="/admin/product/create"
+                    action="/admin/product/update"
                     modelAttribute="newProduct"
                     class="row"
                     enctype="multipart/form-data"
                   >
+                    <div class="mb-3" style="display: none">
+                      <label class="form-label disable">ID</label>
+                      <form:input
+                        type="text"
+                        class="form-control"
+                        path="id"
+                        readonly="true"
+                      />
+                    </div>
                     <div class="mb-3 col-12 col-md-6">
                        <c:set var="errorName">
                         <form:errors path="name" cssClass="invalid-feedback"/>
@@ -155,7 +172,7 @@ uri="http://www.springframework.org/tags/form" %>
                       />
                     </div>
                     <div class="col-12 mb-6 mt-3">
-                      <button class="btn btn-success">Create</button>
+                      <button class="btn btn-success">Update</button>
                     </div>
                   </form:form>
                 </div>

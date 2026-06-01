@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
+
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.UserRepository;
@@ -69,8 +73,16 @@ public class UserController {
 
     // create user
     @PostMapping(value = "/admin/user/create")
-    public String handleCreateUserPage(Model model, @ModelAttribute("newUser") User user,
+    public String handleCreateUserPage(Model model, @ModelAttribute("newUser") @Valid User user,
+            BindingResult newUserBindingResult,
             @RequestParam("inputFile") MultipartFile file) {
+        List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(">>>" + error.getField() + "" + error.getDefaultMessage());
+        }
+        if (newUserBindingResult.hasErrors()) {
+            return "/admin/user/create";
+        }
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
         user.setAvatar(avatar);

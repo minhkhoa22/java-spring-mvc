@@ -1,28 +1,42 @@
 package vn.hoidanit.laptopshop.domain;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+    @NotBlank(message = "Tên sản phẩm không được để trống")
     private String name;
-    private double price;
+    @NotNull(message = "Price không được để trống")
+    @Positive(message = "Price phải lớn hơn 0")
+    @NumberFormat(pattern = "#")
+    private Double price;
     private String image;
+    @NotBlank(message = "detailsDesc không được để trống")
     private String detailsDesc;
+    @NotBlank(message = "shortDesc không được để trống")
     private String shortDesc;
-    private long quantity;
-    private long sold;
+    @NotNull(message = "Quantity không được để trống")
+    @Min(value = 1, message = "Số lượng phải lớn hoặc bằng 1 1")
+    private Long quantity;
+    private Long sold;
     private String factory;
     private String target;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -34,15 +48,15 @@ public class Product {
         this.name = name;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -70,19 +84,19 @@ public class Product {
         this.shortDesc = shortDesc;
     }
 
-    public long getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
-    public long getSold() {
+    public Long getSold() {
         return sold;
     }
 
-    public void setSold(long sold) {
+    public void setSold(Long sold) {
         this.sold = sold;
     }
 
