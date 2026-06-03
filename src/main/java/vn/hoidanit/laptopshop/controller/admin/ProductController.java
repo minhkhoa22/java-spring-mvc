@@ -71,18 +71,19 @@ public class ProductController {
 
     @GetMapping("/admin/product/update/{id}")
     public String getUpdateProductPage(Model model, @PathVariable long id) {
-        Product currentProduct = this.productService.getProductById(id);
+        Product currentProduct = this.productService.fetchProductById(id).get();
         model.addAttribute("newProduct", currentProduct);
         return "admin/product/update";
     }
 
     @PostMapping("/admin/product/update")
-    public String postUpdateProduct(Model model, @ModelAttribute("newProduct") @Valid Product productUpdate,
+    public String postUpdateProduct(Model model, @PathVariable long id,
+            @ModelAttribute("newProduct") @Valid Product productUpdate,
             BindingResult newProductBindingResult, @RequestParam("productFile") MultipartFile file) {
         if (newProductBindingResult.hasErrors()) {
             return "/admin/product/update";
         }
-        Product currentProduct = this.productService.getProductById(productUpdate.getId());
+        Product currentProduct = this.productService.fetchProductById(id).get();
         if (currentProduct != null) {
             if (!file.isEmpty()) {
                 String img = this.uploadService.handleSaveUploadFile(file, "product");
