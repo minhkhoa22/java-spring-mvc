@@ -45,7 +45,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
   <body>
     <jsp:include page="../layout/header.jsp" />
     <jsp:include page="../layout/banner.jsp" />
-    <jsp:include page="../layout/featurs.jsp" />
 
     <!-- Fruits Shop Start-->
     <div class="container-fluid fruite py-5" id="product">
@@ -53,7 +52,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
         <div class="tab-class text-center">
           <div class="row g-4">
             <div class="col-lg-4 text-start">
-              <h1>Sản phẩm</h1>
+              <h1 style="font-size: 40px;">Sản phẩm nổi bật</h1>
             </div>
             <div class="col-lg-8 text-end">
               <ul class="nav nav-pills d-inline-flex text-center mb-5">
@@ -546,6 +545,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       </div>
     </div>
     <!-- Fruits Shop End-->
+    <jsp:include page="../layout/featurs.jsp" />
     <jsp:include page="../layout/footer.jsp" />
 
     <!-- Back to Top -->
